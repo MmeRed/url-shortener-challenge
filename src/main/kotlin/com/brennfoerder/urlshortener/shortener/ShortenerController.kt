@@ -1,5 +1,6 @@
 package com.brennfoerder.urlshortener.shortener
 
+import com.brennfoerder.urlshortener.shortener.dbo.ShortenedUrlDbo
 import com.brennfoerder.urlshortener.shortener.dto.DecodedUrlDto
 import com.brennfoerder.urlshortener.shortener.dto.ShortenedUrlDto
 import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
@@ -16,11 +17,14 @@ class ShortenerController(
 
     @GetMapping("/{toDecode}")
     fun decodeUrl(@PathVariable toDecode: String): DecodedUrlDto {
-        return shortenerService.decodeUrl(toDecode)
+        return shortenerService.decodeUrl(toDecode).toDecodedUrlDto()
     }
 
     @PostMapping("/shorten")
     fun shortenUrl(@RequestBody urlToShortenDto: UrlToShortenDto): ShortenedUrlDto {
-        return shortenerService.shortenUrl(urlToShortenDto)
+        return shortenerService.shortenUrl(urlToShortenDto).toShortenedUrlDto()
     }
 }
+
+private fun ShortenedUrlDbo.toDecodedUrlDto() = DecodedUrlDto(url)
+private fun ShortenedUrlDbo.toShortenedUrlDto() = ShortenedUrlDto(id.toHexString())
