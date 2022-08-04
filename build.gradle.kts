@@ -31,6 +31,8 @@ dependencies {
     }
     testImplementation("com.ninja-squad:springmockk:3.1.1")
     testImplementation("io.strikt:strikt-core:0.34.0")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.3")
+    testImplementation("org.testcontainers:mongodb:1.17.3")
 }
 
 tasks.withType<KotlinCompile> {
