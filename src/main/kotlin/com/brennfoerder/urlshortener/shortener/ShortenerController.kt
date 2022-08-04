@@ -4,11 +4,13 @@ import com.brennfoerder.urlshortener.shortener.dbo.ShortenedUrlDbo
 import com.brennfoerder.urlshortener.shortener.dto.DecodedUrlDto
 import com.brennfoerder.urlshortener.shortener.dto.ShortenedUrlDto
 import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 class ShortenerController(
@@ -17,7 +19,8 @@ class ShortenerController(
 
     @GetMapping("/{toDecode}")
     fun decodeUrl(@PathVariable toDecode: String): DecodedUrlDto {
-        return shortenerService.decodeUrl(toDecode).toDecodedUrlDto()
+        return shortenerService.decodeUrl(toDecode)?.toDecodedUrlDto()
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
 
     @PostMapping("/shorten")

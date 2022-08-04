@@ -5,6 +5,7 @@ import org.bson.types.ObjectId
 import org.springframework.data.mongodb.repository.MongoRepository
 
 interface ShortenerRepository : MongoRepository<ShortenedUrlDbo, String> {
-    fun findOneById(id: ObjectId): ShortenedUrlDbo
+    fun findOneById(id: ObjectId): ShortenedUrlDbo?
+    fun findOneByUrl(url: String): ShortenedUrlDbo?
     fun save(shortenedUrlDbo: ShortenedUrlDbo): ShortenedUrlDbo
 }

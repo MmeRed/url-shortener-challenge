@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service
 class ShortenerService(
     private val shortenerRepository: ShortenerRepository
 ) {
-    fun decodeUrl(toDecode: String): ShortenedUrlDbo {
+    fun decodeUrl(toDecode: String): ShortenedUrlDbo? {
         return shortenerRepository.findOneById(ObjectId(toDecode))
     }
 
     fun shortenUrl(urlToShortenDto: UrlToShortenDto): ShortenedUrlDbo {
-        return shortenerRepository.save(
-            createShortenedUrlDbo(urlToShortenDto)
-        )
+        return shortenerRepository.findOneByUrl(urlToShortenDto.url)
+            ?: shortenerRepository.save(createShortenedUrlDbo(urlToShortenDto))
     }
 
     private fun createShortenedUrlDbo(urlToShortenDto: UrlToShortenDto): ShortenedUrlDbo {

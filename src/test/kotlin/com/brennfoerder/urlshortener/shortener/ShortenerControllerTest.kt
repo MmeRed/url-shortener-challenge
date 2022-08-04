@@ -37,6 +37,16 @@ internal class ShortenerControllerTest(
     }
 
     @Test
+    fun `decode url - not found`() {
+        every { shortenerService.decodeUrl(any()) } returns null
+
+        mockMvc.get("/notfound")
+            .andExpect {
+                status { isNotFound() }
+            }
+    }
+
+    @Test
     fun `encode url - success`() {
         val objectId = ObjectId.get()
         val shortenedUrlDbo = aShortenedUrlDbo(objectId)

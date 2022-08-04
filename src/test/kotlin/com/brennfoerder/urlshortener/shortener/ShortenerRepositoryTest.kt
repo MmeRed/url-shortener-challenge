@@ -1,6 +1,7 @@
 package com.brennfoerder.urlshortener.shortener
 
 import com.brennfoerder.urlshortener.fixtures.aShortenedUrlDbo
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,7 @@ import org.testcontainers.utility.DockerImageName
 import strikt.api.expectThat
 import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNull
 
 @Testcontainers
 @DataMongoTest(excludeAutoConfiguration = [EmbeddedMongoAutoConfiguration::class])
@@ -47,6 +49,30 @@ internal class ShortenerRepositoryTest(
         val result = shortenerRepository.findOneById(saved.id)
 
         expectThat(result).isEqualTo(saved)
+    }
+
+    @Test
+    fun `can get ShortenedUrlDbo by id - returns null when not found`() {
+        val result = shortenerRepository.findOneById(ObjectId.get())
+
+        expectThat(result).isNull()
+    }
+
+    @Test
+    fun `can get ShortenedUrlDbo by url`() {
+        val saved = aShortenedUrlDbo()
+        shortenerRepository.save(saved)
+
+        val result = shortenerRepository.findOneByUrl(saved.url)
+
+        expectThat(result).isEqualTo(saved)
+    }
+
+    @Test
+    fun `can get ShortenedUrlDbo by url - returns null when not found`() {
+        val result = shortenerRepository.findOneByUrl("nonexistent")
+
+        expectThat(result).isNull()
     }
 
     companion object {
