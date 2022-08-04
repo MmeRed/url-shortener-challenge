@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ShortenerController {
+class ShortenerController(
+    private val shortenerService: ShortenerService
+) {
 
     @GetMapping("/{toDecode}")
     fun decodeUrl(@PathVariable toDecode: String): DecodedUrlDto {
-        return DecodedUrlDto("https://www.dkbcodefactory.com")
+        return shortenerService.decodeUrl(toDecode)
     }
 
     @PostMapping("/shorten")
     fun shortenUrl(@RequestBody urlToShortenDto: UrlToShortenDto): ShortenedUrlDto {
-        return ShortenedUrlDto("codefactory")
+        return shortenerService.shortenUrl(urlToShortenDto)
     }
 }
 
