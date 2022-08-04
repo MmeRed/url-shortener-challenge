@@ -1,5 +1,8 @@
 package com.brennfoerder.urlshortener.shortener
 
+import com.brennfoerder.urlshortener.shortener.dto.DecodedUrlDto
+import com.brennfoerder.urlshortener.shortener.dto.ShortenedUrlDto
+import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
 import org.springframework.stereotype.Service
 
 @Service

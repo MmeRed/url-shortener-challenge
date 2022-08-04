@@ -1,5 +1,8 @@
 package com.brennfoerder.urlshortener.shortener
 
+import com.brennfoerder.urlshortener.shortener.dto.DecodedUrlDto
+import com.brennfoerder.urlshortener.shortener.dto.ShortenedUrlDto
+import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,15 +24,3 @@ class ShortenerController(
         return shortenerService.shortenUrl(urlToShortenDto)
     }
 }
-
-data class DecodedUrlDto(
-    val decodedUrl: String
-)
-
-data class UrlToShortenDto(
-    val url: String
-)
-
-data class ShortenedUrlDto(
-    val shortenedUrl: String
-)
