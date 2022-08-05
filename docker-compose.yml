@@ -1,0 +1,18 @@
+version "3.7"
+
+services:
+  url-shortener:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo_db:url-shortener
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.data.mongodb.host": "mongo_db"
+      }'
+
+  mongo_db:
+    image: "mongo:4.4.3"
+    ports:
+      - 27017:27017

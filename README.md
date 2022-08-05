@@ -4,8 +4,11 @@ Implementation for the CodeFactory coding challenge.
 ## TL;DR
 Executing tests: `./gradlew test`
 
-Running Application: `./gradlew bootRun`
-- Prerequisite: Running MongoDB [e.g. on macOS](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition)
+Running Application: 
+- `./gradlew bootRun`
+  - Prerequisite: Running MongoDB [e.g. on macOS](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition)
+- `docker-compose up`
+  - Prerequisite: Docker
 
 API Documentation: http://localhost:8080/swagger-ui/index.html
 
@@ -23,3 +26,7 @@ To prevent e.g. security issues I would never log or respond with unvalidated us
 Features that might come in the feature could be deleting generated shorts after a retention time, validating user input for malicious code and many more.
 
 Since I really just wanted to spend the 2h that were recommended for this task I will not implement a [Functional Test](https://engineering.zalando.com/posts/2022/04/functional-tests-with-testcontainers.html) - but I wanted you to know that I've heard of them and also implemented them in the past :)
+
+After rechecking the project before I hand it in I decided to add the `docker-compose` for convenience - therefore I spent a little over 2hrs.
+
+Done - enjoy! :)
