@@ -1,5 +1,6 @@
 package com.brennfoerder.urlshortener.shortener
 
+import com.brennfoerder.urlshortener.exception.InvalidObjectIdException
 import com.brennfoerder.urlshortener.shortener.dbo.ShortenedUrlDbo
 import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
 import org.bson.types.ObjectId
@@ -10,7 +11,8 @@ class ShortenerService(
     private val shortenerRepository: ShortenerRepository
 ) {
     fun decodeUrl(toDecode: String): ShortenedUrlDbo? {
-        return shortenerRepository.findOneById(ObjectId(toDecode))
+        val objectId = determineObjectId(toDecode)
+        return shortenerRepository.findOneById(objectId)
     }
 
     fun shortenUrl(urlToShortenDto: UrlToShortenDto): ShortenedUrlDbo {
@@ -23,5 +25,13 @@ class ShortenerService(
             id = ObjectId.get(),
             url = urlToShortenDto.url
         )
+    }
+
+    private fun determineObjectId(toDecode: String): ObjectId {
+        try {
+            return ObjectId(toDecode)
+        } catch (exception: IllegalArgumentException) {
+            throw InvalidObjectIdException()
+        }
     }
 }

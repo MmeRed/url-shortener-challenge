@@ -1,5 +1,6 @@
 package com.brennfoerder.urlshortener.shortener
 
+import com.brennfoerder.urlshortener.exception.InvalidObjectIdException
 import com.brennfoerder.urlshortener.fixtures.aShortenedUrlDbo
 import com.brennfoerder.urlshortener.shortener.dto.UrlToShortenDto
 import com.ninjasquad.springmockk.MockkBean
@@ -14,6 +15,9 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest
 internal class ShortenerControllerTest(
@@ -44,6 +48,29 @@ internal class ShortenerControllerTest(
             .andExpect {
                 status { isNotFound() }
             }
+    }
+
+    @Test
+    fun `decode url - invalid ObjectId hexString`() {
+        every { shortenerService.decodeUrl(any()) } throws InvalidObjectIdException()
+
+        // this took me way too long: there seems to be an issue with the mockMvc Kotlin DSL
+        // when using mockMvc.get("/invalidObjectId") it just threw the error from the ShortenerService
+        // and the ControllerAdvice/ExceptionHandler did not catch that
+        // Therefore I'm using for this test the "old" approach
+
+        mockMvc.perform(get("/invalidObjectId"))
+            .andExpect(status().isBadRequest)
+            .andExpect(
+                content().json(
+                    """
+                {
+                    "status": 400,
+                    "message": "Invalid decode variable."
+                }
+                    """.trimIndent()
+                )
+            )
     }
 
     @Test
